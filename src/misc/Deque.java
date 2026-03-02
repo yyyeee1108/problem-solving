@@ -2,22 +2,26 @@ package misc;
 
 import java.io.*;
 
-/**
- * Queue 직접 구현
- */
-public class Queue {
-
+public class Deque {
     static int MX = 1000005;
-    static int[] dat = new int[MX];
-    static int head = 0;
-    static int tail = 0;
+    static int[] dat = new int[2 * MX + 1];
+    static int head = MX;
+    static int tail = MX;
 
-    static void push(int x) {
+    static void pushFront(int x) {
+        dat[--head] = x;
+    }
+
+    static void pushBack(int x) {
         dat[tail++] = x;
     }
 
-    static void pop() {
+    static void popFront() {
         head++;
+    }
+
+    static void popBack() {
+        tail--;
     }
 
     static int front() {
@@ -32,18 +36,17 @@ public class Queue {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
 
-        push(10);
-        push(20);
-        push(30);
-        sb.append(front()).append('\n'); // 10
-        sb.append(back()).append('\n'); // 30
-        pop();
-        pop();
-        push(15);
-        push(25);
+        pushBack(30); // 30
         sb.append(front()).append('\n'); // 30
-        sb.append(back()).append('\n'); // 25
-
+        sb.append(back()).append('\n'); // 30
+        pushFront(25); // 25 30
+        pushBack(12); // 25 30 12
+        sb.append(back()).append('\n'); // 12
+        pushBack(62); // 25 30 12 62
+        popFront(); // 30 12 62
+        sb.append(front()).append('\n'); // 30
+        popFront(); // 12 62
+        sb.append(back()).append('\n'); // 62
         bw.write(sb.toString());
         bw.flush();
     }
